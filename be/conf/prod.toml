@@ -1,0 +1,128 @@
+env = "prod"
+invitation_required = true
+static_root = "./static"
+
+auto_discovery = [
+    'base.listeners',
+    'base.middleware',
+    'base.tasks',
+    'routes.render.discovery',
+    'routes.v1.discovery',
+]
+
+[http_config]
+host = "0.0.0.0"
+port = 8000
+debug = false
+access_log = false
+single_process = true
+
+[app_config]
+CORS_ORIGINS = "*"
+CORS_MAX_AGE = 86400
+REAL_IP_HEADER = "X-Real-IP"
+
+[ext_config]
+oas = false
+
+[db]
+use_tz = false
+timezone = "Asia/Shanghai"
+    [db.connections]
+    game = "mysql://username:password@localhost:3306/magicms"
+    web = "mysql://username:password@localhost:3306/mmsweb"
+
+    [db.apps]
+    [db.apps.game]
+    models = ["models.game"]
+    default_connection = "game"
+    [db.apps.web]
+    models = ["models.community"]
+    default_connection = "web"
+
+
+[caches]
+prefix_key = "MagicMS:"
+serializer = "orjson"
+    [caches.default]
+    engine = "memory"
+    [caches.redis]
+    host = "redis"
+    port = 6379
+    db = 8
+    password = ""
+    max_connections = 50
+
+
+[jwt_auth]
+salt = "2EF96DFF-0BF9-4ED4-A87E-80B7E946CA22"
+algorithm = "HS256"
+expiration = 604800
+    [jwt_auth.headers]
+    alg = "HS256"
+
+
+[smtp]
+host = "smtp.exmail.qq.com"
+port = 25
+use_tls = false
+username = "username@domain.com"
+password = "password"
+
+
+[game_server]
+host = "maple.domain.com"
+port = 8484
+
+
+[rpc_server]
+enable = true
+tls = false
+host = "localhost"
+port = 50051
+root_certificates = ""
+certificate_chain = ""
+private_key = ""
+metadata = { token = "this is a token!" }
+
+
+[gtop100]
+authorized = ['198.148.82.98', '198.148.82.99']
+vote_url = 'https://gtop100.com/topsites/MapleStory/sitedetails/...'
+site_id = '...'
+reward = 10000
+accumulate = 500
+limit = 20000
+
+[logger]
+[[logger.handlers]]
+sink = "logs/access.log"
+sink_type = "file"
+level = "INFO"
+rotation = "64 MB"
+retention = "1 week"
+compression = "zip"
+filter = 'lambda record: record["level"].name == "INFO"'
+
+[[logger.handlers]]
+sink = "logs/warning.log"
+sink_type = "file"
+level = "INFO"
+rotation = "64 MB"
+retention = "1 week"
+compression = "zip"
+filter = 'lambda record: record["level"].name == "WARNING"'
+
+[[logger.handlers]]
+sink = "logs/error.log"
+sink_type = "file"
+level = "ERROR"
+rotation = "64 MB"
+retention = "1 week"
+compression = "zip"
+filter = 'lambda record: record["level"].name == "ERROR"'
+
+[[logger.handlers]]
+sink = "sys.stdout"
+sink_type = "py_object"
+level = "DEBUG"

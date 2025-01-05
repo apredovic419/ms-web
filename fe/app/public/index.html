@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="description" content="MagicMS"/>
+    <meta name="keywords" content="MapleStory 枫之谷">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
+    <title>MagicMS - 魔力枫之谷</title>
+    <link rel="stylesheet" href="%REACT_APP_CDN_BASE_URL%/static/css/font-awesome.min.css">
+    <link href="%REACT_APP_CDN_BASE_URL%/static/css/flatly.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="%REACT_APP_CDN_BASE_URL%/static/css/github-markdown.css">
+    <script src="%REACT_APP_CDN_BASE_URL%/static/js/jquery.min.js"></script>
+    <script src="%REACT_APP_CDN_BASE_URL%/static/js/marked.min.js"></script>
+    <script type="text/javascript" src="%REACT_APP_CDN_BASE_URL%/static/js/bootstrap.min.js"></script>
+    <script src="%REACT_APP_CDN_BASE_URL%/static/js/layer/layer.js" type="application/javascript"></script>
+    <style>
+        @media (min-width: 1800px) {
+            .container {
+                width: 1440px;
+            }
+        }
+    </style>
+</head>
+<body>
+<noscript>你需要启用JavaScript来访问此页面</noscript>
+
+<div class="container">
+    <a href="">
+        <img src="%REACT_APP_CDN_BASE_URL%/static/images/7FgL6oo.png" alt="banner"
+             class="img-responsive jumpinglogo"
+             style="margin: 20px auto 0;">
+    </a>
+    <nav class="navbar navbar-default" style="bottom:-22px;">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">MagicMS</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/register"><i class="fa fa-pencil-square-o fa-inverse" aria-hidden="true"></i><span> 注册</span></a></li>
+                <li><a href="/download"><i class="fa fa-download fa-inverse" aria-hidden="true"></i><span> 下载</span></a></li>
+                <li><a href="/ranking"><i class="fa fa-trophy fa-inverse" aria-hidden="true"></i><span> 排行</span></a></li>
+                <li><a href="/vote"><i class="fa fa-check-square-o fa-inverse" aria-hidden="true"></i><span> 投票</span></a></li>
+                <li><a href="/notice"><i class="fa fa-trophy fa-envelope-square" aria-hidden="true"></i><span> 公告</span></a></li>
+                <li><a href="/cashshop"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span> 商城</span></a></li>
+                <li><a href="/wz"><i class="fa fa-tags" aria-hidden="true"></i><span> 资料库</span></a></li>
+                <!--
+                <li><a href="/playground"><i class="fa fa-gamepad" aria-hidden="true"></i><span> 游乐场<sup style="font-size: 0.8em; color: rgb(67, 221, 6);">[alpha]</sup></span></a></li>
+                -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="well">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="well well2">
+                    <form name="loginform" id="loginform" autocomplete="off">
+                        <div class="form-group">
+                            <label for="username">用户名</label>
+                            <input type="text" name="username" maxlength="12" class="form-control"
+                                   placeholder="账号" id="username" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" style="display:block;">密码
+                                <div class="pull-right"><a
+                                        href="/forgot">忘记密码?</a></div>
+                            </label>
+                            <input type="password" name="password" maxlength="12" class="form-control"
+                                   placeholder="密码" id="password" required="">
+                        </div>
+                        <input id="login" type="submit" class="btn btn-primary btn-block" value="登录">
+                        <a href="/register" class="btn btn-info btn-block">注册</a>
+                    </form>
+                    <div id="message"></div>
+                </div>
+                <div class="well well2">
+                    <h3 class="text-center">服务器信息</h3>
+                    <hr>
+                    <ts id="ts_status">状态</ts>: <b>
+                    <span id="serverStatus">EOL</span></b><br>
+                    <ts id="ts_online">在线人数</ts>: <b id="onlineNumber">0</b><br>
+                    <ts id="ts_time">标准时间</ts>: <b id="ServerTime"></b><br>
+                    <hr>
+                    <ts id="ts_version">版本</ts>: <a href="/download"><b>GMS83</b></a><br>
+                    <ts id="ts_exp_rate">经验倍率</ts>: <b>2.5x</b><br>
+                    <ts id="ts_meso_rate">金币倍率</ts>: <b>3.2x</b><br>
+                    <ts id="ts_drop_rate">掉落倍率</ts>: <b>2x</b><br>
+                    <ts id="ts_boss_rate">BOSS倍率</ts>: <b>5x</b><br>
+                    <ts id="ts_quest_rate">任务倍率</ts>: <b>5x</b>&emsp;<ts id="ts_quest_info">随等级浮动</ts><br>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="root"></div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <center>
+                <p style="color:orange"> 页面设计源自<a href="https://storyms.net/">StoryMS</a> 版权归原作者所有</p>
+            </center>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

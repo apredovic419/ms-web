@@ -1,0 +1,6 @@
+.git/
+venv/
+.idea/
+asset/db/
+tests/
+tools/

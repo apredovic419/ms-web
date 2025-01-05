@@ -1,0 +1,3 @@
+class PasswdForgotService:
+    def __init__(self):
+        ...

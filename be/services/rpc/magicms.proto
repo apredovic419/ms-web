@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.server";
+option java_outer_classname = "ClientProto";
+option objc_class_prefix = "RC";
+
+package rpcclient;
+
+// The greeting service definition.
+service Greeter {
+  rpc GetOnline (Empty) returns (OnlineReply) {}
+  rpc BanUser (CommonRequest) returns (CommonReply) {}
+  rpc GiveNX (NxRequest) returns (CommonReply) {}
+  rpc GetCharacterInfo (CommonRequest) returns (CharacterReply) {}
+  rpc ClearSlot(CommonRequest) returns (CommonReply) {}
+  rpc Disconnect(CommonRequest) returns (CommonReply) {}
+  rpc Message(MessageRequest) returns (CommonReply) {}
+  rpc GetMerchantShop(Empty) returns (MerchantReply) {}
+  rpc Execute(CommandRequest) returns (CommonReply) {}
+}
+
+enum NxType {
+  nx = 0;
+  mp = 1;
+  np = 2;
+}
+
+enum MessageType {
+  notice = 0;
+  server = 1;
+  personal = 2;
+  note = 3;
+  delivery = 4;
+}
+
+message Empty {}
+
+message CommonRequest {
+  string name = 1;
+  string message = 2;
+}
+
+message CommonReply {
+  bool result = 1;
+  string message = 2;
+}
+
+message OnlineReply {
+  int32 count = 1;
+  repeated string data = 2;
+}
+
+message NxRequest {
+  string name = 1;
+  NxType type = 2;
+  int32 number = 3;
+  string message = 4;
+}
+
+message CharacterReply {
+  bool online = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 str = 4;
+  int32 dex = 5;
+  int32 luk = 6;
+  int32 int = 7;
+  int32 meso = 8;
+  string map = 9;
+  int32 nx = 10;
+  int32 mp = 11;
+  int32 np = 12;
+}
+
+message MessageRequest {
+  MessageType type = 1;
+  string recv = 2;
+  string send = 3;
+  string message = 4;
+}
+
+message EquipItem {
+  int32 str = 1;
+  int32 dex = 2;
+  int32 int = 3;
+  int32 luk = 4;
+  int32 hp = 5;
+  int32 mp = 6;
+  int32 watk = 7;
+  int32 matk = 8;
+  int32 wdef = 9;
+  int32 mdef = 10;
+  int32 acc = 11;
+  int32 avoid = 12;
+  int32 speed = 13;
+  int32 jump = 14;
+  int32 vicious = 15;
+  int32 upgradeSlot = 16;
+  int32 level = 17;
+  int32 itemLevel = 18;
+}
+
+message MerchantItem {
+  int32 id = 1;
+  int32 stock = 2;
+  int32 price = 3;
+  bool exist = 4;
+  EquipItem equip = 5;
+}
+
+message HiredInfo {
+  int32 ownId = 1;
+  string ownName = 2;
+  string description = 3;
+  int32 mesos = 4;
+  bool open = 5;
+  repeated MerchantItem items = 6;
+}
+
+message MerchantReply {
+  int32 count = 1;
+  repeated HiredInfo merchants = 2;
+}
+
+message CommandRequest {
+  string command = 1;
+  repeated string params = 2;
+}

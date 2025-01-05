@@ -1,0 +1,456 @@
+#wz_bg {
+    position: absolute;
+    pointer-events: none;
+    /*display: none;*/
+    z-index: 1;
+}
+
+#wz_btn {
+    width: 25px;
+    height: 35px;
+    background-color: black;
+    border: 1px solid red;
+    position: absolute;
+    right: 0px;
+}
+
+
+#wz_edit_btn, #wz_reset_btn {
+    margin-top: 10px;
+    font-size: 8.6pt;
+    color: white;
+}
+
+#wz_bg_frame_cover {
+    position: absolute;
+    background-image: url('avatar/frame_cover.png');
+    background-repeat: no-repeat;
+    width: 53px;
+    height: 43px;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+#wz_bg_top {
+    background-image: url('avatar/top.png');
+    background-size:cover;
+    background-repeat: no-repeat;
+    width: 281px;
+    height: 13px;
+}
+
+#wz_bg_middle_1, #wz_bg_middle_2, #wz_bg_middle_3, #wz_bg_middle_4, #wz_bg_middle_5, #wz_bg_middle_6 {
+    background-color: #292929;
+    width: 281px;
+    overflow: hidden;
+}
+
+#wz_bg_bottom {
+    background-size:cover;
+    background-image: url('avatar/bottom.png');
+    background-repeat: no-repeat;
+    width: 281px;
+    height: 13px;
+}
+
+#wz_stars_1 {
+    margin-left: 49px;
+    height: 10px;
+}
+
+#wz_stars_2 {
+    margin-left: 77px;
+    padding-top: 8px;
+    height: 10px;
+}
+
+.star_blank {
+
+    background-image: url('avatar/star_blank.png');
+    background-repeat: no-repeat;
+    width: 11px;
+    height: 10px;
+    margin-left: -1px;
+    float: left;
+}
+
+#star_0, #star_16 {
+    margin-left: 0px;
+}
+
+#star_6, #star_11, #star_21 {
+    margin-left: 5px;
+}
+
+#wz_soul_name {
+    width: 281px;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: rgb(204, 255, 0);
+    margin-top: 8px;
+    text-align: center;
+    display: none;
+}
+
+#wz_item_name {
+    width: 281px;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: rgb(255, 0, 102);
+    margin-top: 8px;
+    padding-bottom: 1px;
+    text-align: center;
+}
+
+#wz_item_flag {
+    width: 281px;
+    font-size: 8.5pt;
+    font-weight: normal;
+    color: orange;
+    margin-top: 3px;
+    padding-bottom: 13px;
+    text-align: center;
+}
+.dot_line {
+    background-size:cover;
+    background-image: url('avatar/dot_line.png');
+    background-repeat: no-repeat;
+    width: 281px;
+    height: 2px;
+}
+
+#wz_item_icon {
+    background-size:cover;
+    background-image: url('avatar/item_icon_bg.png');
+    background-repeat: no-repeat;
+    width: 75px;
+    height: 75px;
+    margin-top: 20px;
+    margin-left: 5px;
+    float: left;
+}
+
+#wz_item_img {
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    image-rendering: pixelated;
+    transform: scale(2);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#wz_item_icon_cover {
+    position: absolute;
+    background-size:cover;
+    background-image: url('avatar/item_icon_cover.png');
+    background-repeat: no-repeat;
+    width: 74px;
+    height: 74px;
+    margin-left: 2px;
+    margin-top: 1px;
+}
+
+#wz_item_icon_frame {
+    position: absolute;
+    background-size:cover;
+    background-image: url('avatar/rare_frame.png');
+    background-repeat: no-repeat;
+    width: 75px;
+    height: 75px;
+    margin-left: 1px;
+    margin-top: 1px;
+}
+
+#wz_damage_increase {
+    float: left;
+    margin-top: 20px;
+    margin-left: 25px;
+}
+
+#wz_damage_increase_txt {
+    font-size: 8.6pt;
+    float: right;
+    margin-right: -1px;
+    color: rgb(153, 153, 153);
+}
+
+#wz_damage_increase_num {
+    background-image: url('avatar/0.png');
+    background-repeat: no-repeat;
+    width: 19px;
+    height: 26px;
+    clear: both;
+    float: right;
+    margin-top: 5px;
+    margin-right: 1px;
+}
+
+#wz_item_req {
+    clear: both;
+    float: right;
+    margin-top: 6px;
+}
+#wz_item_req2 {
+    clear: both;
+    float: right;
+    color: rgb(153, 153, 153);
+    font-size: 8pt;
+}
+#wz_req_lev {
+    background-image: url('avatar/req_lev.png');
+    background-repeat: no-repeat;
+    width: 49px;
+    height: 6px;
+}
+
+#wz_req_lev {
+    background-image: url('avatar/req_lev.png');
+    background-repeat: no-repeat;
+    width: 49px;
+    height: 6px;
+    float: left;
+}
+
+#wz_req_0 {
+    background-image: url('avatar/req_0.png');
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 5px;
+    margin-left: 17px;
+    float: left;
+}
+
+.item_info_req_0_1, .item_info_req_0_2 {
+    background-image: url('avatar/req_0.png');
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 5px;
+    margin-left: 1px;
+    float: left;
+}
+
+.item_info_req_0_1 {
+    margin-top: 9px;
+}
+
+.item_info_req_0_2 {
+    margin-top: 3px;
+}
+
+#wz_req_str {
+    background-image: url('avatar/req_str.png');
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 6px;
+    padding-right: 3px;
+    margin-top: 9px;
+    clear: both;
+    float: left;
+}
+
+#wz_req_luk {
+    background-image: url('avatar/req_luk.png');
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 6px;
+    padding-right: 3px;
+    margin-left: 9px;
+    margin-top: 9px;
+    float: left;
+}
+
+#wz_req_dex {
+    background-image: url('avatar/req_dex.png');
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 6px;
+    padding-right: 3px;
+    margin-top: 3px;
+    clear: both;
+    float: left;
+}
+
+#wz_req_int {
+    background-image: url('avatar/req_int.png');
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 6px;
+    padding-right: 3px;
+    margin-left: 9px;
+    margin-top: 3px;
+    float: left;
+}
+
+#wz_job_bg {
+    background-image: url('avatar/job_bg.png');
+    background-repeat: no-repeat;
+    width: 237px;
+    height: 24px;
+    margin-left: 12px;
+    margin-top: 4px;
+    padding-bottom: 9px;
+}
+
+#wz_job_bg2 {
+    background-repeat: no-repeat;
+    width: 237px;
+    height: 24px;
+    margin-left: 12px;
+    margin-top: 4px;
+    font-size: 7.5pt;
+    padding-bottom: 9px;
+}
+
+#wz_job_beginner {
+    background-image: url('avatar/beginner.png');
+    background-repeat: no-repeat;
+    width: 31px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 15px;
+    float: left;
+}
+
+#wz_job_warrior {
+    background-image: url('avatar/warrior.png');
+    background-repeat: no-repeat;
+    width: 19px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 14px;
+    float: left;
+}
+
+#wz_job_magician {
+    background-image: url('avatar/magician.png');
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 14px;
+    float: left;
+}
+
+#wz_job_bowman {
+    background-image: url('avatar/bowman.png');
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 14px;
+    float: left;
+}
+
+#wz_job_thief {
+    background-image: url('avatar/thief.png');
+    background-repeat: no-repeat;
+    width: 19px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 14px;
+    float: left;
+}
+
+#wz_job_pirate {
+    background-image: url('avatar/pirate.png');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 10px;
+    margin-top: 7px;
+    margin-left: 14px;
+    float: left;
+}
+
+#wz_bg_middle_4 div {
+    font-size: 8.6pt;
+}
+
+#equip_type {
+    color: rgb(255, 255, 255);
+    margin-left: 14px;
+    margin-top: 4px;
+}
+
+#equip_str, #equip_dex, #equip_int, #equip_luk, #equip_ap, #equip_ma {
+    color: rgb(255, 255, 255);
+    margin-left: 14px;
+    margin-top: 1px;
+}
+
+.equip_num {
+    color: rgb(102, 255, 255);
+}
+
+.equip_add {
+    color: rgb(204, 255, 0);
+}
+
+.equip_work {
+    color: rgb(102, 255, 255);
+}
+
+#equip_ma {
+    padding-bottom: 11px;
+}
+
+#wz_bg_middle_5 div {
+    font-size: 8.6pt;
+}
+
+#wz_potential_img {
+    background-image: url('avatar/rare.png');
+    background-repeat: no-repeat;
+    width: 13px;
+    height: 13px;
+    margin-top: 4px;
+    margin-left: 9px;
+    float: left;
+}
+
+#wz_potential_txt {
+    color: rgb(102, 255, 255);
+    margin-top: 4px;
+    margin-left: 5px;
+    float: left;
+}
+
+#wz_mob_icon {
+    background-size:cover;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 150px;
+    margin: 10px auto;
+}
+
+#wz_mob_img {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    image-rendering: pixelated;
+    transform: scale(1);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#map_info {
+    background-color: #292929;
+    width: 281px;
+    overflow: hidden;
+    justify-content: space-between; /* 左右两边对齐 */
+    align-items: center; /* 垂直居中对齐 */
+}
+
+#map_npc, #map_mob, #map_portal, #map_part {
+    color: rgb(255, 255, 255);
+    margin-left: 5px;
+    font-size: 8.6pt;
+}
+
+#map_icon {
+    background-size:cover;
+    background-repeat: no-repeat;
+    width: 200px;
+    height: 200px;
+    margin: 5px auto;
+}

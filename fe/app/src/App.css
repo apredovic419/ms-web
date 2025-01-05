@@ -1,0 +1,108 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+body {
+    background-image: url('../public/static/images/78VtwiA.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.jumpinglogo {
+    -webkit-animation: jumpinglogoanimation 3s ease-in-out infinite;
+    animation: jumpinglogoanimation 3s ease-in-out infinite;
+}
+
+@-webkit-keyframes jumpinglogoanimation {
+    0% {
+        transform: translateY(10px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(10px);
+    }
+}
+
+@keyframes jumpinglogoanimation {
+    0% {
+        transform: translateY(10px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(10px);
+    }
+}
+
+/* Light themes specific CSS */
+.well {
+    background: #fff;
+}
+
+.well2 {
+    background-color: #f5f5f5;
+}
+
+.commentbubble{float: right;}
+.text-center,.text-left {margin:0px;}
+.positive_comment {
+  color: #5cb85c;
+}
+.negative_comment {
+  color: #d9534f;
+}
+.neutral_comment {
+  color: #428bca;
+}
+.breakword {
+  word-wrap: break-word;
+}
+blockquote {
+  padding: 10px 15px;
+  font-size: 12px;
+  margin: 0 0 5px !important;
+}
+h2, .h2 {
+  font-size: 30px;
+}
+h2>.label { vertical-align: middle;font-size:10px; }

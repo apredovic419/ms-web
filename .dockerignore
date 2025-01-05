@@ -1,0 +1,10 @@
+.git/
+venv/
+.idea/
+db/
+tests/
+tools/
+*/build/
+*/dist/
+**/node_modules
+fe/admin/

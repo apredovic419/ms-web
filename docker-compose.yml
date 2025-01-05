@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql:8.0.31
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: EC9E9853-4AF3-4C98-9635-03CF9EF7F376
+    volumes:
+      - ./db/mysql/magicms.db.gz:/tmp/magicms.db.gz
+      - ./db/mysql/mmsweb.db.gz:/tmp/mmsweb.db.gz
+      - ./db/mysql/setup.sh:/docker-entrypoint-initdb.d/setup.sh
+
+  redis:
+    image: redis:6.2.5-buster
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB__CONNECTIONS__GAME: mysql://root:EC9E9853-4AF3-4C98-9635-03CF9EF7F376@mysql:3306/magicms
+      DB__CONNECTIONS__WEB: mysql://root:EC9E9853-4AF3-4C98-9635-03CF9EF7F376@mysql:3306/mmsweb
+      REDIS_DSN: redis://redis:6379
+
+      # -------- email configuration --------
+      # SMTP__HOST: smtp.gmail.com
+      # SMTP__PORT: 587
+      # SMTP__USE_TLS: true
+      # SMTP__USERNAME: smtp_username
+      # SMTP__PASSWORD: smtp_password
+
+      # -------- rpc configuration --------
+      # RPC_SERVER__ENABLE: true
+      # RPC_SERVER__HOST: localhost
+      # RPC_SERVER__PORT: 9090
+      # RPC_SERVER__METADATA__token: MagicMS2022
+      # RPC_SERVER__TLS: true
+      # RPC_SERVER__ROOT_CERTIFICATES: path/ca.crt
+      # RPC_SERVER__CERTIFICATE_CHAIN: path/server.crt
+      # RPC_SERVER__PRIVATE_KEY: path/server.key
+
+      # -------- game server configuration --------
+      # GAME_SERVER__HOST: localhost
+      # GAME_SERVER__PORT: 8484
+
+      # -------- Gtop100 configuration --------
+      # GTOP100__SITE_ID: "xxxxx"
+      # GTOP100__VOTE_URL: "https://gtop100.com/xxxx"
+      # GTOP100__REWARD: 10000
+      # GTOP100__ACCUMULATE: 500
+      # GTOP100__LIMIT: 20000
+
+    depends_on:
+      - mysql
+      - redis
