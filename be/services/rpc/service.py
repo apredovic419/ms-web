@@ -84,7 +84,7 @@ class MagicService(metaclass=SingletonMeta):
         else:
             channel = grpc.aio.insecure_channel(f"{host}:{port}", options=self.options)
         if metadata:
-            self.metadata = ((k, v) for k, v in metadata.items())
+            self.metadata = [(k, v) for k, v in metadata.items()]
         else:
             self.metadata = None
         self.stub = GreeterStub(channel)

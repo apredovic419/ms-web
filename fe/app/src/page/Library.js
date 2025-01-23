@@ -533,8 +533,8 @@ class QueryItem extends React.Component {
                     h5Shop += `${i18n.t('Library.goodPrice')}: <span style="color:orange">${n.price}</span> ${i18n.t('Library.nxText')}<br>`;
                 }
             }
-            if (resp.data.char_shop !== undefined) {
-                for (let n of resp.data.char_shop) {
+            if (resp.data.hire_shop !== undefined) {
+                for (let n of resp.data.hire_shop) {
                     charShop += `<span style="color:orange">${n.owner}</span>的商店 (<span style="color:#18bc9c">${n.price}</span> ${i18n.t('Library.mesoText')})<br>`;
                 }
             }

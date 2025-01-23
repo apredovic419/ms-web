@@ -79,9 +79,9 @@ enable = false
 tls = false
 host = "localhost"
 port = 50051
-root_certificates = "services/rpc/tls/ca.crt"
-certificate_chain = "services/rpc/tls/ms.crt"
-private_key = "services/rpc/tls/ms.key"
+root_certificates = ""
+certificate_chain = ""
+private_key = ""
 metadata = { token = "this is a token!" }
 
 
