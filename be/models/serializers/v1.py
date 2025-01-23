@@ -26,9 +26,9 @@ class UserInfoResponse(BaseModel):
     id: int
     name: str
     nick: Optional[str] = ""
-    email: str = ""
+    email: Optional[str]
     logged_in: int = Field(alias="loggedin")
-    last_login: datetime = Field(alias="lastlogin")
+    last_login: Optional[datetime] = Field(alias="lastlogin")
     nx: int = Field(alias="nxCredit")
     mp: int = Field(alias="maplePoint")
     np: int = Field(alias="nxPrepaid")

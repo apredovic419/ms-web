@@ -39,7 +39,7 @@ class NoticeListView(JWTView):
         service: NoticeService = Dependency(NoticeService),
     ):
         """公告列表"""
-        total, items = await service.list(vo)
+        total, items = await service.list(vo, must_display=True)
         m = NoticeListResponse(total=total, items=items)
         return response.ok(request, m.model_dump())
 
