@@ -209,6 +209,9 @@ export function EquipmentParser() {
           wdef: parsed.info?.incPDD || 0,
         }
       };
+      if (parsed.info?.level?.info?.maxLevel) {
+        info.info.maxLevel = parsed.info?.level?.info?.maxLevel;
+      }
 
       setFormData(info);
 
@@ -431,6 +434,19 @@ export function EquipmentParser() {
         <div className="w-1/3 pt-4">
           <div className="bg-gray-600 text-white p-4 rounded-lg shadow-lg">
             <div className="space-y-4">
+              {/* 装备ID */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Equipment ID
+                </label>
+                <input
+                  type="text"
+                  value={formData.oid}
+                  onChange={(e) => setFormData(prev => ({ ...prev, oid: e.target.value }))}
+                  className="w-full p-2 bg-gray-700 border border-gray-500 rounded-md text-white"
+                />
+              </div>
+
               {/* 装备名称 */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">
