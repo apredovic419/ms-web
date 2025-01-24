@@ -1,0 +1,73 @@
+{
+  "dashboard": "数据仪表盘",
+  "lastUpdated": "最后更新: {{date}}",
+  "onlineCharacters": "实时在线角色",
+  "onlineDevices": "实时在线设备",
+  "newAccountsToday": "今日新增账户",
+  "activeCharactersToday": "今日活跃角色",
+  "registrationStats": "注册数据统计",
+  "loginDurationTrend": "登录时长趋势",
+  "levelStats": "等级统计",
+  "loginDuration": "登录时长",
+  "date": "日期",
+  "hours": "小时",
+  "comparedToYesterday": "相比昨日",
+  "error": "错误",
+  "retry": "重试",
+  "24h": "24小时",
+  "7d": "7天",
+  "30d": "30天",
+  "newRegisteredAccounts": "新注册账户",
+  "newCreatedCharacters": "新建角色",
+  "loggedInCharacters": "登录角色数",
+  "loggedInDevices": "登录设备数",
+  "loginDurationTrend30Days": "近30天登录时长趋势",
+  "activeCharacterLevelStats90Days": "90天内活跃角色等级统计",
+  "maxLevel": "最高等级",
+  "minLevel": "最低等级",
+  "avgLevel": "平均等级",
+  "medianLevel": "中位数等级",
+  "common": {
+    "search": "搜索",
+    "reset": "重置",
+    "submit": "提交",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "save": "保存",
+    "loading": "加载中...",
+    "noData": "没有找到记录",
+    "confirm": "确认",
+    "pagination": {
+      "prev": "上一页",
+      "next": "下一页",
+      "pageSize": "每页行数",
+      "page": "第 {{page}} 页，共 {{total}} 页"
+    }
+  },
+  "orders": {
+    "title": "订单查询",
+    "filter": {
+      "dateRange": "时间范围",
+      "accountId": "账号ID",
+      "characterId": "角色ID",
+      "characterName": "角色名称",
+      "itemId": "商品ID",
+      "itemName": "商品名称",
+      "search": "查询"
+    },
+    "table": {
+      "character": "角色名称",
+      "gift": "是否礼物",
+      "giftYes": "是",
+      "giftNo": "否",
+      "shopId": "商品ID",
+      "shopName": "商品名称",
+      "count": "数量",
+      "price": "价格",
+      "currency": "货币类型",
+      "limitGroup": "限购组",
+      "createTime": "购买时间"
+    }
+  }
+} 

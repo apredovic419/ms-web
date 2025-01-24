@@ -18,7 +18,9 @@ This will build and start the necessary services defined in the `docker-compose.
 
 After waiting for the application to start, you can view the application by accessing `http://localhost:8000` through the browser.
 
-**Note**: You should check the [docker-compose.yml](./docker-compose.yml) file for the main configuration environment variables. For the WEB database, a complete dataset is already provided in [`db/mysql/mmsweb.db.gz`](./db/mysql/mmsweb.db.gz), while for the GAME database, [`db/mysql/magicms.db.gz`](./db/mysql/magicms.db.gz) only contains the necessary table structures.
+For the admin panel, you can access it by visiting `http://localhost:8000` and logging. By the way, you can set `webadmin` to `1` in the `accounts` table to make the account an administrator.
+
+**Note**: You should check the [docker-compose.yml](./docker-compose.yml) file for the main configuration environment variables. For the WEB database, a complete dataset is already provided in [`db/mysql/mmsweb.db.gz`](./db/mysql/mmsweb.db.gz), while for the GAME database, [`db/mysql/magicms.db.gz`](./db/mysql/magicms.db.gz) only contains the necessary table structures and an initial account `guest`, with the password `guest`.
 
 ## Future Updates
 Stay tuned for more updates and detailed documentation.

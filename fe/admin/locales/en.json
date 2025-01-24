@@ -1,0 +1,73 @@
+{
+  "dashboard": "Dashboard",
+  "lastUpdated": "Last updated: {{date}}",
+  "onlineCharacters": "Online Characters",
+  "onlineDevices": "Online Devices",
+  "newAccountsToday": "New Accounts Today",
+  "activeCharactersToday": "Active Characters Today",
+  "registrationStats": "Registration Stats",
+  "loginDurationTrend": "Login Duration Trend",
+  "levelStats": "Level Stats",
+  "loginDuration": "Login Duration",
+  "date": "Date",
+  "hours": "Hours",
+  "comparedToYesterday": "compared to yesterday",
+  "error": "Error",
+  "retry": "Retry",
+  "24h": "24 Hours",
+  "7d": "7 Days",
+  "30d": "30 Days",
+  "newRegisteredAccounts": "New Registered Accounts",
+  "newCreatedCharacters": "New Created Characters",
+  "loggedInCharacters": "Logged In Characters",
+  "loggedInDevices": "Logged In Devices",
+  "loginDurationTrend30Days": "Login Duration Trend in the Last 30 Days",
+  "activeCharacterLevelStats90Days": "Active Character Level Stats in the Last 90 Days",
+  "maxLevel": "Max Level",
+  "minLevel": "Min Level",
+  "avgLevel": "Average Level",
+  "medianLevel": "Median Level",
+  "common": {
+    "search": "Search",
+    "reset": "Reset",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "loading": "Loading...",
+    "noData": "No records found",
+    "confirm": "Confirm",
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "pageSize": "Page Size",
+      "page": "Page {{page}} of {{total}}"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "filter": {
+      "dateRange": "Date Range",
+      "accountId": "Account ID",
+      "characterId": "Character ID",
+      "characterName": "Character Name",
+      "itemId": "Item ID",
+      "itemName": "Item Name",
+      "search": "Search"
+    },
+    "table": {
+      "character": "Character",
+      "gift": "Gift",
+      "giftYes": "Yes",
+      "giftNo": "No",
+      "shopId": "Item ID",
+      "shopName": "Item Name",
+      "count": "Quantity",
+      "price": "Price",
+      "currency": "Currency",
+      "limitGroup": "Limit Group",
+      "createTime": "Purchase Time"
+    }
+  }
+} 

@@ -23,7 +23,7 @@ COPY --from=be-build ${LOCAL_PKG} ${LOCAL_PKG}
 COPY --from=be-build /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
     apk update && \
-    apk add --no-cache libxslt-dev jpeg-dev openjpeg-dev
+    apk add --no-cache libxslt-dev jpeg-dev openjpeg-dev libstdc++
 RUN ln -sf ${LOCAL_PKG}/bin/* /usr/local/bin/ && echo "Asia/Shanghai" > /etc/timezone
 WORKDIR /app
 COPY be .
