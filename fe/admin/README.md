@@ -23,7 +23,7 @@ Configure `.env` with the following variables:
 MYSQL_WEBSITE_URL=
 MYSQL_GAME_URL=
 
-# Authentication
+# If `AUTH_TRUST_HOST=false`, the service does not require login.
 AUTH_TRUST_HOST=true
 AUTH_SECRET=
 
@@ -56,7 +56,7 @@ docker run -p 3000:3000 \
 
 You should now be able to access the application at http://localhost:3000.
 
-**Note: The value of the login account `webadmin` must be greater than 0, otherwise you cannot log in.**
+**Note: The value of the login account `webadmin` must be greater than 0, otherwise you will not be able to login.**
 
 
 ## Tech Stack
