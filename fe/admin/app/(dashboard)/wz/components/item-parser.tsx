@@ -40,6 +40,8 @@ export function ItemParser() {
   const [isGridView, setIsGridView] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadMode, setUploadMode] = useState<'current' | 'skip' | 'override' | 'error'>('current');
+  const [editingField, setEditingField] = useState<'name' | 'id' | 'desc' | null>(null);
+  const [editValue, setEditValue] = useState('');
 
   const handleFileChange = async (file: File) => {
     if (!file || !file.name.endsWith('.img')) return;
@@ -50,7 +52,7 @@ export function ItemParser() {
       const buffer = await file.arrayBuffer();
       const uint8Array = new Uint8Array(buffer);
       const result = mapleWasm.parse_image(file.name, uint8Array, false);
-      
+
       // 解析JSON结果
       const parsed = JSON.parse(result);
       if (!parsed || typeof parsed !== 'object') {
@@ -97,7 +99,7 @@ export function ItemParser() {
 
       setItems(parsedItems);
       setSelectedItem(null);
-      
+
       const endTime = performance.now();
       const duration = ((endTime - startTime) / 1000).toFixed(2);
       toast.success(`Successfully parsed ${parsedItems.length} items, cost ${duration} seconds`);
@@ -116,6 +118,19 @@ export function ItemParser() {
     if (file) {
       await handleFileChange(file);
     }
+  };
+
+  // 添加一个更新数据的辅助函数
+  const updateItemData = (updatedItem: ItemData) => {
+    // 更新 selectedItem
+    setSelectedItem(updatedItem);
+
+    // 更新 items 数组中的对应项
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === updatedItem.id ? updatedItem : item
+      )
+    );
   };
 
   return (
@@ -156,14 +171,14 @@ export function ItemParser() {
         }}
       >
         <div className="flex items-center justify-center gap-4 px-4">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
             className={cn(
               "text-gray-400 transition-all duration-200",
               items.length > 0 ? "h-6 w-6" : "h-12 w-12 mb-4"
-            )} 
-            fill="none" 
-            viewBox="0 0 24 24" 
+            )}
+            fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -246,11 +261,81 @@ export function ItemParser() {
               <div className="bg-gray-600 text-white rounded-lg shadow-lg overflow-hidden">
                 {/* 顶部信息栏 */}
                 <div className="bg-gray-700 px-4 py-3">
-                  <div className="text-yellow-400 font-bold text-lg">
-                    {selectedItem.name}
-                  </div>
-                  <div className="text-gray-400 text-sm">
-                    ID: {selectedItem.id} · Category: {selectedItem.type}
+                  {editingField === 'name' ? (
+                    <input
+                      type="text"
+                      className="w-full bg-gray-800 text-yellow-400 font-bold text-lg px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      onBlur={() => {
+                        if (selectedItem) {
+                          updateItemData({ ...selectedItem, name: editValue });
+                        }
+                        setEditingField(null);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          if (selectedItem) {
+                            updateItemData({ ...selectedItem, name: editValue });
+                          }
+                          setEditingField(null);
+                        }
+                        if (e.key === 'Escape') {
+                          setEditingField(null);
+                        }
+                      }}
+                      autoFocus
+                    />
+                  ) : (
+                    <div
+                      className="text-yellow-400 font-bold text-lg cursor-pointer hover:bg-gray-600/50 px-2 py-1 rounded"
+                      onClick={() => {
+                        setEditValue(selectedItem?.name || '');
+                        setEditingField('name');
+                      }}
+                    >
+                      {selectedItem?.name}
+                    </div>
+                  )}
+                  <div className="text-gray-400 text-sm flex gap-2">
+                    <span>ID: {editingField === 'id' ? (
+                      <input
+                        type="text"
+                        className="w-24 bg-gray-800 text-gray-300 px-2 py-0.5 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        onBlur={() => {
+                          if (selectedItem) {
+                            updateItemData({ ...selectedItem, id: editValue });
+                          }
+                          setEditingField(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            if (selectedItem) {
+                              updateItemData({ ...selectedItem, id: editValue });
+                            }
+                            setEditingField(null);
+                          }
+                          if (e.key === 'Escape') {
+                            setEditingField(null);
+                          }
+                        }}
+                        autoFocus
+                      />
+                    ) : (
+                      <span
+                        className="cursor-pointer hover:bg-gray-600/50 px-2 py-0.5 rounded"
+                        onClick={() => {
+                          setEditValue(selectedItem?.id || '');
+                          setEditingField('id');
+                        }}
+                      >
+                        {selectedItem?.id}
+                      </span>
+                    )}</span>
+                    <span>·</span>
+                    <span>Category: {selectedItem?.type}</span>
                   </div>
                 </div>
 
@@ -302,12 +387,44 @@ export function ItemParser() {
                   </div>
 
                   {/* 描述信息 */}
-                  {selectedItem.desc && (
+                  {(selectedItem?.desc || editingField === 'desc') && (
                     <div className="mt-4 p-3 bg-gray-700/50 rounded">
                       <div className="text-gray-400 text-xs mb-1">Description</div>
-                      <div className="text-sm text-gray-200">
-                        {selectedItem.desc}
-                      </div>
+                      {editingField === 'desc' ? (
+                        <textarea
+                          className="w-full bg-gray-800 text-gray-200 text-sm px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px]"
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          onBlur={() => {
+                            if (selectedItem) {
+                              updateItemData({ ...selectedItem, desc: editValue });
+                            }
+                            setEditingField(null);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && e.ctrlKey) {
+                              if (selectedItem) {
+                                updateItemData({ ...selectedItem, desc: editValue });
+                              }
+                              setEditingField(null);
+                            }
+                            if (e.key === 'Escape') {
+                              setEditingField(null);
+                            }
+                          }}
+                          autoFocus
+                        />
+                      ) : (
+                        <div
+                          className="text-sm text-gray-200 cursor-pointer hover:bg-gray-600/50 px-2 py-1 rounded"
+                          onClick={() => {
+                            setEditValue(selectedItem?.desc || '');
+                            setEditingField('desc');
+                          }}
+                        >
+                          {selectedItem?.desc}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
