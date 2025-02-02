@@ -55,7 +55,7 @@ class StatusView(JWTView):
             m = GameOnlineResponse(
                 status=await cache.get("ServerStatus", default="正常"),
                 count=await User.filter(loggedin=2).count(),
-                invite=config.invitation_required,
+                invite=config.reg_config.force_invitation,
             )
             if not m.status:
                 detect = detect_port(config.game_server.host, config.game_server.port)
@@ -79,7 +79,7 @@ class OnlineView(JWTView):
 
             m = GameOnlineResponse(
                 status=await cache.get("ServerStatus", default="正常"),
-                invite=config.invitation_required,
+                invite=config.reg_config.force_invitation,
                 count=count,
                 characters=characters,
             )

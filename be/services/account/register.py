@@ -21,13 +21,11 @@ class RegisterError(Exception):
 
 class RegisterService:
     _char_list = list(range(48, 58)) + list(range(65, 91))
-    secret = "6LfzEMcZAAAAAMVqqlVyDeiZobD7Le8bHa1rFMYm"
-    recaptcha_url = "https://recaptcha.net/recaptcha/api/siteverify"
 
     def __init__(self, http_client: AsyncClient, cache: Cache, config: Settings):
         self.httpx = http_client
         self.cache = cache
-        self.config = config
+        self.config = config.reg_config
 
     @staticmethod
     async def email_banned(email: str) -> bool:
@@ -84,11 +82,11 @@ class RegisterService:
         :param captcha:
         :param ip: user's ip address
         """
-        payload = {"secret": self.secret, "response": captcha}
+        payload = {"secret": self.config.recaptcha_secret, "response": captcha}
         if ip:
             payload["remoteip"] = ip
         try:
-            r = await self.httpx.post(self.recaptcha_url, data=payload, timeout=10)
+            r = await self.httpx.post(self.config.recaptcha_url, data=payload, timeout=10)
             data = r.json()
             return data.get("success") is True
         except:
@@ -97,7 +95,7 @@ class RegisterService:
     async def verify_invitation_code(self, invitation_code: str) -> str:
         """verify the invitation code
         """
-        if self.config.invitation_required:
+        if self.config.force_invitation:
             if not invitation_code:
                 return "当前邀请码为必填项"
             inv = await Invitation.filter(code=invitation_code).first()

@@ -134,6 +134,12 @@ class DatabaseConfig(BaseModel):
     apps: DatabaseApps
 
 
+class RegisterConfig(BaseModel):
+    force_invitation: bool = False
+    recaptcha_secret: str = ""
+    recaptcha_url: str = "https://recaptcha.net/recaptcha/api/siteverify"
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_nested_delimiter="__")
 
@@ -141,7 +147,8 @@ class Settings(BaseSettings):
     recover: bool = Field(default=False)
     recover_interval: float = Field(default=60)
     k8s: bool = Field(default=False)
-    invitation_required: bool = Field(default=False)
+    domain: str = "http://localhost"
+    reg_config: RegisterConfig = RegisterConfig()
     mongo_dsn: Optional[MongoDsn] = None
     redis_dsn: Optional[RedisDsn] = None
     auto_discovery: list[str]

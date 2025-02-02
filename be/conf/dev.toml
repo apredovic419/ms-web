@@ -1,5 +1,5 @@
 env = "dev"
-invitation_required = true
+domain = "http://localhost:8000"
 static_root = "./static"
 
 auto_discovery = [
@@ -59,6 +59,12 @@ algorithm = "HS256"
 expiration = 604800
     [jwt_auth.headers]
     alg = "HS256"
+
+
+[reg_config]
+force_invitation = false
+recaptcha_secret = ""
+recaptcha_url = "https://recaptcha.net/recaptcha/api/siteverify"
 
 
 [smtp]

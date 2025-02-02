@@ -94,18 +94,19 @@ class UserService:
     def captcha_key(username):
         return f"reset:{username}:captcha"
 
-    async def send_reset_code(self, smtp: SMTPService, cache: Cache, captcha: str):
+    async def send_reset_code(self, smtp: SMTPService, cache: Cache, domain: str, captcha: str):
         """发送重置密码验证码
 
         :param smtp: SMTP服务
         :param cache: 缓存服务
+        :param domain: 域名
         :param captcha: 验证码
         :return: 状态码
         """
         await self.sync_from_db()
         if not self.user.email:
             raise UserError("您的账号没有设置电子邮箱，无法请求重置", 401)
-        reset_link = f"https://mxd.fcp233.cn/forgot?username={self.user.name}&code={captcha}"
+        reset_link = f"{domain}/forgot?username={self.user.name}&code={captcha}"
         async with aiofiles.open("templates/reset-password.html") as f:
             html = await f.read()
             html = html.format(fmt_reset_link=reset_link, fmt_captcha_code=captcha)

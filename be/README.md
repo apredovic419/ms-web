@@ -58,6 +58,18 @@ docker run -d -e ENV=prod -v /path/to/conf:/app/conf mmsweb
 
 ## External Dependencies
 
+### reCAPTCHA
+
+reCAPTCHA is used for human-machine verification during account registration, and it is a necessary component of the registration process.
+
+**Steps:**
+
+1.  **Apply for a Key:** You need to apply for a site at [https://www.google.com/recaptcha/](https://www.google.com/recaptcha/) to obtain your secret key.
+2.  **FE Configuration:** When building your frontend page, set the environment variable `REACT_APP_RECAPTCHA_SITE_KEY` to your reCAPTCHA site key.
+3.  **BE Configuration:**
+    *   Open your backend configuration file.
+    *   In the `[reg_config]` section, find and update the `recaptcha_secret` field by pasting your secret key here.
+
 ### SMTP
 
 SMTP is used for registration, password reset, and web store notifications.

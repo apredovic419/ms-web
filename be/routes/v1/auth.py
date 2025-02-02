@@ -1,5 +1,6 @@
 from sanic import Request
 
+from config import Settings
 from component import openapi, response
 from component.cache import cache
 from component.inject import Dependency
@@ -140,6 +141,7 @@ class ResetPassword(JWTView):
         request: Request,
         vo: ResetPwdCaptchaRequest = Dependency(ResetPwdCaptchaRequest),
         smtp: SMTPService = Dependency(SMTPService),
+        config: Settings = Dependency(Settings),
     ):
         """找回密码-获取验证码"""
         user = await User.filter(name=vo.username).first()
@@ -149,7 +151,7 @@ class ResetPassword(JWTView):
         self.username = vo.username
         user_service = UserService(user)
         captcha = user_service.generate_captcha()
-        await user_service.send_reset_code(smtp, cache, captcha)
+        await user_service.send_reset_code(smtp, cache, config.domain, captcha)
         request.ctx.message = "验证码已发送至您的邮箱"
         return response.ok(request, None)
 
