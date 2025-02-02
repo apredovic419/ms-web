@@ -28,6 +28,6 @@ RUN ln -sf ${LOCAL_PKG}/bin/* /usr/local/bin/ && echo "Asia/Shanghai" > /etc/tim
 WORKDIR /app
 COPY be .
 COPY --from=fe-build /app/build/static /app/static
-COPY --from=fe-build /app/build /app/templates
+COPY --from=fe-build /app/build/index.html /app/templates/index.html
 EXPOSE 8000
 CMD ["python", "app.py"]

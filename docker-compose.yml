@@ -32,9 +32,15 @@ services:
     ports:
       - "8000:8000"
     environment:
+      DOMAIN: http://localhost:8000
       DB__CONNECTIONS__GAME: mysql://root:EC9E9853-4AF3-4C98-9635-03CF9EF7F376@mysql:3306/magicms
       DB__CONNECTIONS__WEB: mysql://root:EC9E9853-4AF3-4C98-9635-03CF9EF7F376@mysql:3306/mmsweb
       REDIS_DSN: redis://redis:6379
+
+      # -------- registration configuration --------
+      # REG_CONFIG__FORCE_INVITATION: true
+      # REG_CONFIG__RECAPTCHA_SECRET: "xxxxxxxx"
+      # REG_CONFIG__RECAPTCHA_URL: "https://recaptcha.net/recaptcha/api/siteverify"
 
       # -------- email configuration --------
       # SMTP__HOST: smtp.gmail.com
@@ -47,11 +53,11 @@ services:
       # RPC_SERVER__ENABLE: true
       # RPC_SERVER__HOST: localhost
       # RPC_SERVER__PORT: 9090
-      # RPC_SERVER__METADATA__token: MagicMS2022
+      # RPC_SERVER__METADATA__token: "xxxxxxxx"
       # RPC_SERVER__TLS: true
-      # RPC_SERVER__ROOT_CERTIFICATES: path/ca.crt
-      # RPC_SERVER__CERTIFICATE_CHAIN: path/server.crt
-      # RPC_SERVER__PRIVATE_KEY: path/server.key
+      # RPC_SERVER__ROOT_CERTIFICATES: "path/ca.crt"
+      # RPC_SERVER__CERTIFICATE_CHAIN: "path/server.crt"
+      # RPC_SERVER__PRIVATE_KEY: "path/server.key"
 
       # -------- game server configuration --------
       # GAME_SERVER__HOST: localhost
