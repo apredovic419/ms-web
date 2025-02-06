@@ -117,6 +117,7 @@ class RegisterService:
         invitation_code: Optional[str] = None,
     ) -> Optional[User]:
         async with transactions.in_transaction("web") as conn:
+            inv = None
             if invitation_code:
                 inv = (
                     await Invitation.filter(code=invitation_code, register_id=None)
@@ -138,7 +139,8 @@ class RegisterService:
             if not user:
                 conn.rollback()
                 return
-            inv.register_id = user.id
-            inv.note = ((inv.note or "") + f"\n{datetime.now()} 注册账号: {user.name}").strip()
-            await inv.save()
+            if inv:
+                inv.register_id = user.id
+                inv.note = ((inv.note or "") + f"\n{datetime.now()} 注册账号: {user.name}").strip()
+                await inv.save()
             return user
