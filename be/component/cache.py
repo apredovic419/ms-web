@@ -176,11 +176,13 @@ class MemoryEngine:
     def __call__(self, *args, **kwargs):
         return self
 
-    def delete(self, key: str, ttl_verify: bool = False) -> None:
+    def _delete(self, key: str, ttl_verify: bool = False) -> bool:
         """删除指定缓存"""
         if key in self.namespace:
             if ttl_verify is False or self.namespace[key].ttl < -1:
                 del self.namespace[key]
+                return True
+        return False
 
     def et_clear(self) -> None:
         """清理超时缓存"""
@@ -217,7 +219,15 @@ class MemoryEngine:
         if hasattr(value, "__sizeof__") and value.__sizeof__() > 16384 and (ex or px):
             life = ex if ex else px // 1000
             loop = asyncio.get_event_loop()
-            loop.call_later(life * 2, self.delete, name, True)
+            loop.call_later(life * 2, self._delete, name, True)
+
+    async def delete(self, *names) -> int:
+        """实现delete接口"""
+        c = 0
+        for name in names:
+            if self._delete(name, ttl_verify=False):
+                c += 1
+        return c
 
 
 class DataBlock:
@@ -444,6 +454,11 @@ class Cache:
         """
         value = self.encode(value, serializer=serializer, **kwargs)
         return await self.current_db.set(self.build_key(name), value, ex, px, nx, xx)
+
+    async def delete(self, *names: str) -> int:
+        """删除指定缓存"""
+        keys = [self.build_key(name) for name in names]
+        return await self.current_db.delete(*keys)
 
     async def get_or_set(
         self,

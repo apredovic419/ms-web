@@ -24,7 +24,7 @@ class RegisterService:
 
     def __init__(self, http_client: AsyncClient, cache: Cache, config: Settings):
         self.httpx = http_client
-        self.cache = cache
+        self.cache = cache.select("redis")
         self.config = config.reg_config
 
     @staticmethod
@@ -58,7 +58,8 @@ class RegisterService:
         """delete the captcha code from cache"""
         await self.cache.delete(f"register:captcha:{email}")
 
-    async def send_captcha(self, smtp: SMTPService, to_email: str, captcha: str):
+    @staticmethod
+    async def send_captcha(smtp: SMTPService, to_email: str, captcha: str):
         """send the captcha code to destination email address
 
         :param smtp: SMTPService
@@ -133,7 +134,7 @@ class RegisterService:
                 birthday=birthday,
                 tos=1,
                 ip=ip,
-                nxPrepaid=inv.nx if invitation_code else 0,
+                nxPrepaid=inv.nx if inv else 0,
                 createdat=datetime.now(),
             )
             if not user:
