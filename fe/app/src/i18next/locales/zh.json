@@ -308,6 +308,7 @@
     "hireMerchant": "雇佣商人",
     "respawnTime": "刷新时间",
     "dropItemList": "掉落物品",
+    "spawnMap": "出没地区",
     "respawnPeriod": "刷新区间",
     "respawnMap": "所在地图",
     "relateQuest": "相关任务"

@@ -5,14 +5,13 @@ from typing import Literal, Optional
 
 from grpc.aio import AioRpcError
 from motor.motor_asyncio import AsyncIOMotorClient
-from tortoise.queryset import F, Q
+from tortoise.queryset import Q
 
 from component.cache import Cache
-from services.constant import checkin_items
 from models.community import CashShop, MsCommodity, MsData, MsItemCategory
-from models.function import JsonContains, JsonQuote
 from models.game import DropData, NpcShop, NpcShopItem
 from models.serializers.v1 import LibraryQueryArgs, LibraryQueryResponse
+from services.constant import checkin_items
 from services.rpc.service import MagicService, ProtoBufSerializer
 
 
@@ -388,29 +387,42 @@ class LibraryRDB(LibraryService):
 
     async def get_mob_maps(self, mob_id: int) -> list[dict]:
         """查询怪物的刷新地图"""
-        key = f"mob:maps:{mob_id}"
-        maps = await self.cache.smembers(key)
-        return [{"oid": int(m)} for m in maps]
+
+        async def query_mob_maps():
+            sql = f"""
+            SELECT `oid`, `name` FROM `{MsData.Meta.table}`
+            WHERE `category`='Map'
+            AND JSON_CONTAINS(json_extract(`info`, '$.mob[*].oid'),JSON_QUOTE('{mob_id}'));
+            """
+            queryset = await MsData.raw(sql)
+            return [{"oid": o.oid, "name": o.name} for o in queryset]
+
+        key = f"mob:{mob_id}:maps"
+        result = await self.cache.get_or_set(key, default=query_mob_maps, ex=60 * 60 * 12)
+        return result
 
     async def mob_info(self, mob_id: int) -> dict:
-        drop, spawn = await asyncio.gather(
+        drop, spawn, maps = await asyncio.gather(
             self.get_mob_drop(mob_id),
             self.get_mob_respawn(mob_id),
+            self.get_mob_maps(mob_id),
         )
-        return {"drop": drop, "respawn": spawn}
+        return {"drop": drop, "respawn": spawn, "maps": maps}
 
     async def npc_info(self, npc_id: int | str) -> dict:
-        fn1 = JsonContains(F("info"), JsonQuote(str(npc_id)), "$.npc")
-        queryset = MsData.annotate(c=fn1).filter(
-            category__in=[MsItemCategory.Map, MsItemCategory.Quest],
-            c__gt=0,
-        )
+        sql = f"""
+        SELECT `oid`, `name`, `category` FROM `{MsData.Meta.table}`
+        WHERE `category` IN ('Map', 'Quest')
+        AND JSON_CONTAINS(`info`->'$.npc',JSON_QUOTE('{npc_id}'));
+        """
         maps, quests = [], []
-        async for row in queryset.values("oid", "name", "category"):
-            if row.pop("category") == MsItemCategory.Map.value:
-                maps.append(row)
+        queryset = await MsData.raw(sql)
+        for row in queryset:
+            info = {"oid": row.oid, "name": row.name}
+            if row.category == MsItemCategory.Map.value:
+                maps.append(info)
             else:
-                quests.append(row)
+                quests.append(info)
         result = {
             "map": maps,
             "quest": quests,
@@ -500,16 +512,24 @@ class LibraryRDB(LibraryService):
         """
         raise NotImplementedError
 
-    @staticmethod
-    async def source_by_quest(oid: int) -> tuple[Literal["quest"], dict]:
+    async def source_by_quest(self, oid: int) -> tuple[Literal["quest"], list[dict]]:
         """通过任务查询物品来源
         :param oid:
         :return:
         """
-        fn = JsonContains(F("info"), JsonQuote(str(oid)), "$.item")
-        queryset = MsData.annotate(c=fn).filter(category=MsItemCategory.Quest, c__gt=0).limit(100)
-        result = await queryset.values("oid", "name")
-        return "quest", result
+
+        async def query_quest_item():
+            sql = f"""
+            SELECT oid, name FROM `{MsData.Meta.table}`
+            WHERE `category`='Quest'
+            AND JSON_CONTAINS(`info`->'$.item', JSON_QUOTE('{oid}'));
+            """
+            result = await MsData.raw(sql)
+            return [{"oid": r.oid, "name": r.name} for r in result]
+
+        key = f"item:{oid}:quest"
+        v = await self.cache.get_or_set(key, default=query_quest_item, ex=60 * 60 * 12)
+        return "quest", v
 
     async def source_info(self, oid: int, timeout: float = None) -> dict:
         """查询物品来源"""

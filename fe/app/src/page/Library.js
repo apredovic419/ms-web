@@ -209,11 +209,11 @@ class QueryItem extends React.Component {
         const parseAttribute = (element, attribute) => {
             return JSON.parse(element.closest('[data-item]').getAttribute('data-item'));
         };
-    
+
         const attr = parseAttribute(e.target, 'data-item');
         const info = [];
         const isNotChinese = !i18n.language.includes("zh");
-    
+
         const labels = {
             level: isNotChinese ? "Level" : "怪物等级",
             hp: isNotChinese ? "HP" : "怪物血量",
@@ -224,14 +224,14 @@ class QueryItem extends React.Component {
             exp: isNotChinese ? "EXP" : "经验值",
             category: isNotChinese ? "Category : Mob" : "分类 : 怪物"
         };
-    
+
         const requirements = ['level', 'hp', 'watk', 'wdef', 'matk', 'mdef', 'exp'];
         requirements.forEach((req, index) => {
             const value = attr.info[req] !== undefined ? attr.info[req] : 0;
             info.push(`${labels[req]} : ${value}&nbsp;&nbsp;`);
             if (index % 2 === 1) info.push('<br>');
         });
-    
+
         const createElement = (content) => `
             <div role="dialog" tabindex="-1">
                 <div id="wz_bg_frame_cover"></div>
@@ -256,7 +256,7 @@ class QueryItem extends React.Component {
                 <div id="wz_bg_bottom"></div>
             </div>
         `;
-    
+
         layer.open({
             type: 1,
             title: false,
@@ -590,43 +590,262 @@ class QueryItem extends React.Component {
         // 查询怪物掉落
         let attr = JSON.parse(e.target.parentNode.parentNode.parentNode.getAttribute('data-item'));
         beLibrarySource(attr.oid, 'Mob').then(resp => {
-            let drop_info = '';
-            let spawn_info = '';
+            let dropInfo = '';
+            let spawnInfo = '';
+            let mapInfo = '';
+
+            // 处理掉落信息
             for (let d of resp.data.drop) {
-                drop_info += `${d.itemid} <span style="color:orange">${d.name}</span> ${i18n.t('Library.baseDropRate')}:${(d.chance / 10000).toFixed(2)}%<br>`;
+                dropInfo += `
+                    <div class="drop-item">
+                        <span class="item-id">${d.itemid}</span>
+                        <span class="item-name">${d.name}</span>
+                        <span class="drop-rate">${(d.chance / 10000).toFixed(2)}%</span>
+                    </div>`;
             }
+
+            // 处理刷新信息
             for (let sp of resp.data.respawn) {
-                spawn_info += `---- <span style="color:orange">频道 ${sp.channel}</span> ${i18n.t('Library.respawnPeriod')} <span style="color:orange">${sp.status}</span><br>`;
+                spawnInfo += `
+                    <div class="spawn-item">
+                        <span class="channel">CH.${sp.channel}</span>
+                        <span class="status">${sp.status}</span>
+                    </div>`;
             }
-            let doc = `
-                <div style="background: #444; border-radius: 5px; color: white; min-height: 400px; width: auto; min-width: 320px; max-width: 100%">
-                    <div class="jconfirm-title-c"></div>
-                    <div class="jconfirm-content-pane" style="transition-duration: 0.3s; transition-timing-function: cubic-bezier(0.36, 0.55, 0.19, 1);">
-                        <div>
-                            <div style="width: auto; min-width: 320px; max-width: 100%">
-                                <div class="name_detail_d">
-                                    <label id="name_npc" style="width: 100%; text-align: center; font-weight: 700">${attr.name}</label>
-                                </div>
-                                <div style="width: auto; overflow: hidden; min-width: 320px; max-width: 100%">
-                                    <div style="background: #9d9d9d; margin-left: 5px; height: auto; width: auto; float: left">
-                                        <img id="icon_npc" style="width: auto; max-height: 180px; min-width: 100px; max-width: 140px; margin: 10px;" src="${attr.icon}">
-                                    </div>
-                                    <div style="float: left; margin-left: 6px; margin-right: 6px; font-size: 12px;">
-                                        ${spawn_info === '' ? '' : `=======${i18n.t('Library.respawnTime')}<br>${spawn_info}`}
-                                        <br>=======${i18n.t('Library.dropItemList')}<br>${drop_info === '' ? '无<br>' : drop_info}
-                                        <br>
-                                    </div>
-                                </div>
+
+            // 处理地图信息
+            for (let map of resp.data.maps) {
+                mapInfo += `
+                    <div class="map-item">
+                        <span class="map-id">${map.oid}</span>
+                        <span class="map-name">${map.name}</span>
+                    </div>`;
+            }
+
+            const styles = `
+                <style>
+                    .mob-container {
+                        display: flex;
+                        background: #444;
+                        color: white;
+                        min-height: 300px;
+                        gap: 1px;
+                        flex-direction: column;
+                    }
+
+                    .layer-content-scrollable {
+                        max-height: none;
+                    }
+
+                    @media (max-width: 767px) {
+                        .layer-content-scrollable {
+                            overflow-y: auto;
+                            max-height: 70vh; /* 可以调整高度 */
+                            padding-right: 5px; /* 避免滚动条遮挡内容 */
+                        }
+                    }
+
+                    @media (min-width: 768px) { /* 当屏幕宽度大于等于 768px 时，改为 row 布局 */
+                        .mob-container {
+                            flex-direction: row;
+                            height: 500px; /* 在大屏幕上保持高度 */
+                        }
+                    }
+
+                    .mob-column {
+                        padding: 15px;
+                        background: #383838;
+                        display: flex;
+                        flex-direction: column;
+                        min-height: 300px;
+                    }
+
+                    .mob-column-left {
+                        width: 100%;
+                    }
+
+                    @media (min-width: 768px) { /* 当屏幕宽度大于等于 768px 时 */
+                        .mob-column-left {
+                            flex: 0 0 225px;
+                            width: auto;
+                        }
+                    }
+
+                    .mob-column-right {
+                        flex: 1;
+                    }
+
+                    .mob-section {
+                        margin-bottom: 20px;
+                    }
+
+                    .mob-section-header {
+                        font-size: 14px;
+                        color: #18bc9c;
+                        padding-bottom: 8px;
+                        margin-bottom: 12px;
+                        border-bottom: 1px solid #555;
+                        font-weight: bold;
+                    }
+
+                    .mob-section-content {
+                        overflow-y: auto;
+                    }
+
+                    .mob-section-content::-webkit-scrollbar {
+                        width: 4px;
+                    }
+
+                    .mob-section-content::-webkit-scrollbar-track {
+                        background: #444;
+                    }
+
+                    .mob-section-content::-webkit-scrollbar-thumb {
+                        background: #666;
+                        border-radius: 2px;
+                    }
+                    
+                    /* 掉落物品样式 */
+                    .drop-item {
+                        padding: 6px;
+                        margin-bottom: 4px;
+                        background: #4a4a4a;
+                        border-radius: 3px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-size: 13px;
+                    }
+                    
+                    .item-id {
+                        color: #999;
+                        font-size: 12px;
+                        min-width: 60px;
+                    }
+                    
+                    .item-name {
+                        color: orange;
+                        flex: 1;
+                    }
+                    
+                    .drop-rate {
+                        color: #18bc9c;
+                        min-width: 60px;
+                        text-align: right;
+                    }
+                    
+                    /* 刷新信息样式 */
+                    .spawn-item {
+                        padding: 6px;
+                        margin-bottom: 4px;
+                        background: #4a4a4a;
+                        border-radius: 3px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .channel {
+                        color: orange;
+                    }
+                    
+                    .status {
+                        color: #18bc9c;
+                    }
+                    
+                    /* 地图信息样式 */
+                    .map-item {
+                        padding: 6px;
+                        margin-bottom: 4px;
+                        background: #4a4a4a;
+                        border-radius: 3px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        font-size: 13px;
+                    }
+                    
+                    .map-id {
+                        color: #999;
+                        font-size: 12px;
+                        min-width: 70px;
+                    }
+                    
+                    .map-name {
+                        color: orange;
+                    }
+                    
+                    /* 怪物图标容器 */
+                    .mob-icon-container {
+                        text-align: center;
+                        margin-bottom: 20px;
+                    }
+                    
+                    .mob-icon {
+                        background: #4a4a4a;
+                        padding: 10px;
+                        border-radius: 5px;
+                        display: inline-block;
+                    }
+                    
+                    .mob-icon img {
+                        max-height: 140px;
+                        width: auto;
+                    }
+                    
+                    .mob-name {
+                        margin-top: 10px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: white;
+                    }
+                </style>
+            `;
+
+            const doc = `
+                ${styles}
+                <div class="mob-container">
+                    <div class="mob-column mob-column-left">
+                        <div class="mob-icon-container">
+                            <div class="mob-icon">
+                                <img src="${attr.icon}" alt="${attr.name}">
                             </div>
+                            <div class="mob-name">${attr.name}</div>
+                        </div>
+                        
+                        ${spawnInfo ? `
+                        <div class="mob-section">
+                            <div class="mob-section-header">${i18n.t('Library.respawnTime')}</div>
+                            <div class="mob-section-content">
+                                ${spawnInfo}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${mapInfo ? `
+                        <div class="mob-section">
+                            <div class="mob-section-header">${i18n.t('Library.spawnMap')}</div>
+                            <div class="mob-section-content">
+                                ${mapInfo}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="mob-column mob-column-right">
+                        <div class="mob-section-header">${i18n.t('Library.dropItemList')}</div>
+                        <div class="mob-section-content layer-content-scrollable">
+                            ${dropInfo || '无掉落信息'}
                         </div>
                     </div>
                 </div>`;
-            layer.closeAll()
+
+            layer.closeAll();
             layer.open({
                 type: 1,
                 title: false,
                 closeBtn: 1,
-                area: ['auto', '400px'],
+                area: [Math.min(window.innerWidth * 0.9, 550) + 'px', 'auto'],
                 fixed: true,
                 skin: 'layui-bg-gray',
                 shadeClose: true,
@@ -637,7 +856,7 @@ class QueryItem extends React.Component {
             if (error.response && error.response.data && error.response.data.msg !== undefined)
                 msg = error.response.data.msg;
             layer.msg(msg, {icon: 2, time: 6000});
-        })
+        });
     }
 
     showNpcSource(e) {
